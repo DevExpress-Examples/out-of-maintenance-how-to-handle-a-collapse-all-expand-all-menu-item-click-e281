@@ -14,13 +14,14 @@ namespace Q109817 {
 			InitializeComponent();
 
 			PivotGridControlEx pivot = new PivotGridControlEx();
+			pivot.OptionsData.DataProcessingEngine = PivotDataProcessingEngine.Optimized;
 			pivot.Parent = this;
 			pivot.Dock = DockStyle.Fill;
 			pivot.FieldExpandedAll += new EventHandler<FieldExpandedEventArgs>(pivot_FieldExpandedAll);
 
-			pivot.Fields.Add("group", PivotArea.RowArea);
-			pivot.Fields.Add("product", PivotArea.RowArea);
-			pivot.Fields.Add("sales", PivotArea.DataArea);
+			pivot.Fields.AddDataSourceColumn("group", PivotArea.RowArea);
+			pivot.Fields.AddDataSourceColumn("product", PivotArea.RowArea);
+			pivot.Fields.AddDataSourceColumn("sales", PivotArea.DataArea);
 
 			DataTable table = new DataTable();
 			table.Columns.Add("group", typeof(string));
@@ -57,9 +58,10 @@ namespace Q109817 {
 
 		public new PivotGridControlEx PivotGrid { get { return (PivotGridControlEx)base.PivotGrid; } }
 
-		public override void ChangeFieldExpanded(PivotGridFieldBase field, bool expanded) {
-			base.ChangeFieldExpanded(field, expanded);
+		public override bool ChangeFieldExpanded(PivotGridFieldBase field, bool expanded) {
+			bool result = base.ChangeFieldExpanded(field, expanded);
 			PivotGrid.RaiseFieldExpandedAll(field, expanded);
+			return result;
 		}
 	}
 

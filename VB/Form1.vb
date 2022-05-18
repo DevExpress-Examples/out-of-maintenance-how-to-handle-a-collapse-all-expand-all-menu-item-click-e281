@@ -16,13 +16,14 @@ Namespace Q109817
 			InitializeComponent()
 
 			Dim pivot As New PivotGridControlEx()
+			pivot.OptionsData.DataProcessingEngine = PivotDataProcessingEngine.Optimized
 			pivot.Parent = Me
 			pivot.Dock = DockStyle.Fill
 			AddHandler pivot.FieldExpandedAll, AddressOf pivot_FieldExpandedAll
 
-			pivot.Fields.Add("group", PivotArea.RowArea)
-			pivot.Fields.Add("product", PivotArea.RowArea)
-			pivot.Fields.Add("sales", PivotArea.DataArea)
+			pivot.Fields.AddDataSourceColumn("group", PivotArea.RowArea)
+			pivot.Fields.AddDataSourceColumn("product", PivotArea.RowArea)
+			pivot.Fields.AddDataSourceColumn("sales", PivotArea.DataArea)
 
 			Dim table As New DataTable()
 			table.Columns.Add("group", GetType(String))
@@ -70,10 +71,11 @@ Namespace Q109817
 			End Get
 		End Property
 
-		Public Overrides Sub ChangeFieldExpanded(ByVal field As PivotGridFieldBase, ByVal expanded As Boolean)
-			MyBase.ChangeFieldExpanded(field, expanded)
+		Public Overrides Function ChangeFieldExpanded(ByVal field As PivotGridFieldBase, ByVal expanded As Boolean) As Boolean
+			Dim result As Boolean = MyBase.ChangeFieldExpanded(field, expanded)
 			PivotGrid.RaiseFieldExpandedAll(field, expanded)
-		End Sub
+			Return result
+		End Function
 	End Class
 
 	Public Class FieldExpandedEventArgs
