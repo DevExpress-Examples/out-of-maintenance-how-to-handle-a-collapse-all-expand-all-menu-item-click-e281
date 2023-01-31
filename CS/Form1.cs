@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using DevExpress.XtraPivotGrid;
 using DevExpress.XtraPivotGrid.Data;
+using System;
+using System.Data;
+using System.Windows.Forms;
 
 namespace Q109817 {
-	public partial class Form1 : Form {
+    public partial class Form1 : Form {
 		public Form1() {
 			InitializeComponent();
 
@@ -19,25 +15,28 @@ namespace Q109817 {
 			pivot.Dock = DockStyle.Fill;
 			pivot.FieldExpandedAll += new EventHandler<FieldExpandedEventArgs>(pivot_FieldExpandedAll);
 
-			pivot.Fields.AddDataSourceColumn("group", PivotArea.RowArea);
-			pivot.Fields.AddDataSourceColumn("product", PivotArea.RowArea);
-			pivot.Fields.AddDataSourceColumn("sales", PivotArea.DataArea);
+			pivot.Fields.AddDataSourceColumn("Product Group", PivotArea.RowArea);
+			pivot.Fields.AddDataSourceColumn("Product", PivotArea.RowArea);
+			pivot.Fields.AddDataSourceColumn("Sales", PivotArea.DataArea);
+			pivot.Fields[2].CellFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+			pivot.Fields[2].CellFormat.FormatString = "c0";
+			pivot.BestFitRowArea();
 
 			DataTable table = new DataTable();
-			table.Columns.Add("group", typeof(string));
-			table.Columns.Add("product", typeof(string));
-			table.Columns.Add("sales", typeof(int));
-			table.Rows.Add("group 1", "product 1", 1);
-			table.Rows.Add("group 1", "product 2", 2);
-			table.Rows.Add("group 1", "product 3", 3);
-			table.Rows.Add("group 2", "product 4", 4);
-			table.Rows.Add("group 2", "product 5", 5);
-			table.Rows.Add("group 2", "product 6", 6);
+			table.Columns.Add("Product Group", typeof(string));
+			table.Columns.Add("Product", typeof(string));
+			table.Columns.Add("Sales", typeof(int));
+			table.Rows.Add("Group A", "Almond", 1248);
+			table.Rows.Add("Group A", "Apple", 2678);
+			table.Rows.Add("Group A", "Apricot", 13002);
+			table.Rows.Add("Group B", "Baguette", 936);
+			table.Rows.Add("Group B", "Bacon", 10540);
+			table.Rows.Add("Group B", "Baking Soda", 1080);
 			pivot.DataSource = table.DefaultView;
 		}
 
 		void pivot_FieldExpandedAll(object sender, FieldExpandedEventArgs e) {
-			MessageBox.Show("The " + e.Field.FieldName + " field was " + (e.Expanded ? "expanded" : "collapsed"));
+			MessageBox.Show("Fields are " + (e.Expanded ? "expanded": "collapsed"));
 		}
 	}
 

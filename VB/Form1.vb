@@ -18,24 +18,27 @@ Namespace Q109817
             pivot.Parent = Me
             pivot.Dock = DockStyle.Fill
             AddHandler pivot.FieldExpandedAll, New EventHandler(Of FieldExpandedEventArgs)(AddressOf pivot_FieldExpandedAll)
-            pivot.Fields.AddDataSourceColumn("group", PivotArea.RowArea)
-            pivot.Fields.AddDataSourceColumn("product", PivotArea.RowArea)
-            pivot.Fields.AddDataSourceColumn("sales", PivotArea.DataArea)
-            Dim table As DataTable = New DataTable()
-            table.Columns.Add("group", GetType(String))
-            table.Columns.Add("product", GetType(String))
-            table.Columns.Add("sales", GetType(Integer))
-            table.Rows.Add("group 1", "product 1", 1)
-            table.Rows.Add("group 1", "product 2", 2)
-            table.Rows.Add("group 1", "product 3", 3)
-            table.Rows.Add("group 2", "product 4", 4)
-            table.Rows.Add("group 2", "product 5", 5)
-            table.Rows.Add("group 2", "product 6", 6)
+            pivot.Fields.AddDataSourceColumn("Product Group", PivotArea.RowArea)
+            pivot.Fields.AddDataSourceColumn("Product", PivotArea.RowArea)
+            pivot.Fields.AddDataSourceColumn("Sales", PivotArea.DataArea)
+            pivot.Fields(2).CellFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+            pivot.Fields(2).CellFormat.FormatString = "c0"
+            pivot.BestFitRowArea()
+            Dim table As New DataTable()
+            table.Columns.Add("Product Group", GetType(String))
+            table.Columns.Add("Product", GetType(String))
+            table.Columns.Add("Sales", GetType(Integer))
+            table.Rows.Add("Group A", "Almond", 1248)
+            table.Rows.Add("Group A", "Apple", 2678)
+            table.Rows.Add("Group A", "Apricot", 13002)
+            table.Rows.Add("Group B", "Baguette", 936)
+            table.Rows.Add("Group B", "Bacon", 10540)
+            table.Rows.Add("Group B", "Baking Soda", 1080)
             pivot.DataSource = table.DefaultView
         End Sub
 
         Private Sub pivot_FieldExpandedAll(ByVal sender As Object, ByVal e As FieldExpandedEventArgs)
-            MessageBox.Show("The " & e.Field.FieldName & " field was " & If(e.Expanded, "expanded", "collapsed"))
+            MessageBox.Show("Fields are " & If(e.Expanded, "expanded", "collapsed"))
         End Sub
     End Class
 
