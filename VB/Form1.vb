@@ -1,10 +1,8 @@
-Imports System
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports DevExpress.XtraPivotGrid
 Imports DevExpress.XtraPivotGrid.Data
+Imports System
+Imports System.Data
+Imports System.Windows.Forms
 
 Namespace Q109817
 
@@ -24,7 +22,7 @@ Namespace Q109817
             pivot.Fields(2).CellFormat.FormatType = DevExpress.Utils.FormatType.Numeric
             pivot.Fields(2).CellFormat.FormatString = "c0"
             pivot.BestFitRowArea()
-            Dim table As New DataTable()
+            Dim table As DataTable = New DataTable()
             table.Columns.Add("Product Group", GetType(String))
             table.Columns.Add("Product", GetType(String))
             table.Columns.Add("Sales", GetType(Integer))
